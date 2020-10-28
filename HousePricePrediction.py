@@ -321,6 +321,9 @@ grid_search_cv(lasso, lasso_params)
 lasso_best_params, lasso_best_score = best_params, best_score
 print('Lasso best params:{} & best_score:{:0.5f}' .format(lasso_best_params, lasso_best_score))
 
+#lasso_best_params = {'alpha': 0.00033, 'random_state': 43}
+#lasso_best_score = 0.10932
+
 
 ''''Define hyperparameters of ridge.'''
 ridge_params = {'alpha':[ 9, 9.2, 9.4, 9.5, 9.52, 9.54, 9.56, 9.58, 9.6, 9.62, 9.64, 9.66, 9.68, 9.7,  9.8],
@@ -329,6 +332,9 @@ ridge_params = {'alpha':[ 9, 9.2, 9.4, 9.5, 9.52, 9.54, 9.56, 9.58, 9.6, 9.62, 9
 grid_search_cv(ridge, ridge_params)
 ridge_best_params, ridge_best_score = best_params, best_score
 print('Ridge best params:{} & best_score:{:0.5f}' .format(ridge_best_params, ridge_best_score))
+
+#ridge_best_params = {'alpha': 9.64, 'random_state': 43}
+#ridge_best_score = 0.11077
 
 
 '''Define hyperparameters of kernel ridge'''
@@ -340,6 +346,9 @@ grid_search_cv(kr, kernel_params)
 kernel_best_params, kernel_best_score = best_params, best_score
 print('Kernel Ridge best params:{} & best_score:{:0.5f}' .format(kernel_best_params, kernel_best_score))
 
+#kernel_ridge_best_params = {'alpha': 0.28, 'coef0': 4, 'degree': 2, 'kernel': 'polynomial'}
+#kernel_ridge_best_score = 0.10849
+
 
 '''Define hyperparameters of Elastic net.'''
 elastic_params = {'alpha': [ 0.0003, 0.00035, 0.00045, 0.0005], 
@@ -348,6 +357,9 @@ elastic_params = {'alpha': [ 0.0003, 0.00035, 0.00045, 0.0005],
 grid_search_cv(elnt, elastic_params)
 elastic_best_params, elastic_best_score = best_params, best_score
 print('Elastic Net best params:{} & best_score:{:0.5f}' .format(elastic_best_params, elastic_best_score))
+
+#Elasticnet_best_params = {'alpha': 0.00035, 'l1_ratio': 0.95, 'random_state': 43}
+#Elasticnet_best_score = 0.10932
 
 
 '''Define hyperparameters of support vector machine'''
@@ -359,6 +371,9 @@ svm_params = {
 grid_search_cv(svm, svm_params)
 svm_best_params, svm_best_score = best_params, best_score
 print('SVM best params:{} & best_score:{:0.5f}' .format(svm_best_params, svm_best_score))
+
+#SVM_best_params = {'C': 5, 'gamma': 0.001, 'kernel': 'rbf'}
+#SVM_best_score = 0.11162
 
 
 '''Hyperparameters of xgb'''
@@ -462,14 +477,14 @@ lgb_opt = lgb_opt
 otp_models = [lasso_opt,ridge_opt,kernel_ridge_opt,elastic_net_opt,svm_opt,xgb_opt,gb_opt,lgb_opt]
 
 
-# '''Now train and predict with optimized models'''
-# def predict_with_optimized_models(model):
-#     model.fit(df_train_final, y_train)
-#     y_pred = np.expm1(model.predict(df_test_final))
-#     submission = pd.DataFrame()
-#     submission['Id']= test_data.Id
-#     submission['SalePrice'] = y_pred
-#     return submission
+'''Now train and predict with optimized models'''
+def predict_with_optimized_models(model):
+    model.fit(df_train_final, y_train)
+    y_pred = np.expm1(model.predict(df_test_final))
+    submission = pd.DataFrame()
+    submission['Id']= test_data.Id
+    submission['SalePrice'] = y_pred
+    return submission
 
 # '''Make submission with optimized lasso, ridge, kernel_ridge, elastic_net and svm, xgb, gb, and lgb.'''
 # predict_with_optimized_models(lasso_opt).to_csv('lasso_optimized.csv', index = False)
@@ -550,9 +565,36 @@ plt.suptitle('Learning Curves of Optimized Models', fontsize = 20)
 plt.tight_layout(rect = [0, 0.03, 1, 0.97])
 
 
+opt_models = [lasso_opt,ridge_opt,kernel_ridge_opt,elastic_net_opt,svm_opt,xgb_opt,gb_opt,lgb_opt]
 
+
+
+'''Ensemble Model of different Types'''
+
+'''1. Voting Regressors. '''
+
+from sklearn.ensemble import VotingRegressor
+voting_reg = VotingRegressor(estimators=[('lasso', lasso_opt), ('ridge', ridge_opt), ('kernal ridge', kernel_ridge_opt),
+                                          ('elastic net',elastic_net_opt),('support vector', svm_opt),('xgboost',xgb_opt),
+                                          ('gradient boosting',gb_opt),('lightgbm',lgb_opt)])
+
+cross_validate(voting_reg)
+
+predict_with_optimized_models(voting_reg).to_csv('voting_regressor.csv', index = False)
+
+# from sklearn.model_selection import train_test_split
+# X_train, X_test, Y_train, Y_test = train_test_split(df_train_final, y_train, test_size = 0.3, random_state = seed)
+# voting_reg.fit(X_train, Y_train)
                  
-                 
+# from sklearn.metrics import accuracy_score
+# for reg in opt_models:
+#     reg.fit(X_train, Y_train)
+#     y_pred = reg.predict(X_test)
+#     print(reg.__class__.__name__, accuracy_score(Y_test, y_pred))
+
+
+
+
 # from sklearn.model_selection import train_test_split
 # X_train,X_test,Y_train,Y_test = train_test_split(X,y, test_size=0.2, random_state=42)
 
