@@ -309,71 +309,71 @@ def grid_search_cv(model, params):
     return best_params, best_score
 
 
-''''Define hyperparameters of lasso.'''
+# ''''Define hyperparameters of lasso.'''
 
-alpha = [0.0001, 0.0002, 0.00025, 0.0003, 0.00031, 0.00032, 0.00033, 0.00034, 0.00035, 0.00036, 0.00037, 0.00038, 
-         0.0004, 0.00045, 0.0005, 0.00055, 0.0006, 0.0008,  0.001, 0.002, 0.005, 0.007, 0.008, 0.01]
+# alpha = [0.0001, 0.0002, 0.00025, 0.0003, 0.00031, 0.00032, 0.00033, 0.00034, 0.00035, 0.00036, 0.00037, 0.00038, 
+#          0.0004, 0.00045, 0.0005, 0.00055, 0.0006, 0.0008,  0.001, 0.002, 0.005, 0.007, 0.008, 0.01]
 
-lasso_params = {'alpha': alpha,
-               'random_state':[seed]}
+# lasso_params = {'alpha': alpha,
+#                'random_state':[seed]}
 
-grid_search_cv(lasso, lasso_params)
-lasso_best_params, lasso_best_score = best_params, best_score
-print('Lasso best params:{} & best_score:{:0.5f}' .format(lasso_best_params, lasso_best_score))
+# grid_search_cv(lasso, lasso_params)
+# lasso_best_params, lasso_best_score = best_params, best_score
+# print('Lasso best params:{} & best_score:{:0.5f}' .format(lasso_best_params, lasso_best_score))
 
-#lasso_best_params = {'alpha': 0.00033, 'random_state': 43}
-#lasso_best_score = 0.10932
-
-
-''''Define hyperparameters of ridge.'''
-ridge_params = {'alpha':[ 9, 9.2, 9.4, 9.5, 9.52, 9.54, 9.56, 9.58, 9.6, 9.62, 9.64, 9.66, 9.68, 9.7,  9.8],
-               'random_state':[seed]}
-
-grid_search_cv(ridge, ridge_params)
-ridge_best_params, ridge_best_score = best_params, best_score
-print('Ridge best params:{} & best_score:{:0.5f}' .format(ridge_best_params, ridge_best_score))
-
-#ridge_best_params = {'alpha': 9.64, 'random_state': 43}
-#ridge_best_score = 0.11077
+lasso_best_params = {'alpha': 0.00033, 'random_state': 43}
+lasso_best_score = 0.10932
 
 
-'''Define hyperparameters of kernel ridge'''
-kernel_params = {'alpha':[0.27, 0.28, 0.29, 0.3],
-                'kernel':['polynomial', 'linear'], 
-                'degree':[2, 3],
-                'coef0':[3.5, 4, 4.2]}
-grid_search_cv(kr, kernel_params)
-kernel_best_params, kernel_best_score = best_params, best_score
-print('Kernel Ridge best params:{} & best_score:{:0.5f}' .format(kernel_best_params, kernel_best_score))
+# ''''Define hyperparameters of ridge.'''
+# ridge_params = {'alpha':[ 9, 9.2, 9.4, 9.5, 9.52, 9.54, 9.56, 9.58, 9.6, 9.62, 9.64, 9.66, 9.68, 9.7,  9.8],
+#                'random_state':[seed]}
 
-#kernel_ridge_best_params = {'alpha': 0.28, 'coef0': 4, 'degree': 2, 'kernel': 'polynomial'}
-#kernel_ridge_best_score = 0.10849
+# grid_search_cv(ridge, ridge_params)
+# ridge_best_params, ridge_best_score = best_params, best_score
+# print('Ridge best params:{} & best_score:{:0.5f}' .format(ridge_best_params, ridge_best_score))
+
+ridge_best_params = {'alpha': 9.64, 'random_state': 43}
+ridge_best_score = 0.11077
 
 
-'''Define hyperparameters of Elastic net.'''
-elastic_params = {'alpha': [ 0.0003, 0.00035, 0.00045, 0.0005], 
-                 'l1_ratio': [0.80, 0.85, 0.9, 0.95],
-                 'random_state':[seed]}
-grid_search_cv(elnt, elastic_params)
-elastic_best_params, elastic_best_score = best_params, best_score
-print('Elastic Net best params:{} & best_score:{:0.5f}' .format(elastic_best_params, elastic_best_score))
+# '''Define hyperparameters of kernel ridge'''
+# kernel_params = {'alpha':[0.27, 0.28, 0.29, 0.3],
+#                 'kernel':['polynomial', 'linear'], 
+#                 'degree':[2, 3],
+#                 'coef0':[3.5, 4, 4.2]}
+# grid_search_cv(kr, kernel_params)
+# kernel_best_params, kernel_best_score = best_params, best_score
+# print('Kernel Ridge best params:{} & best_score:{:0.5f}' .format(kernel_best_params, kernel_best_score))
 
-#Elasticnet_best_params = {'alpha': 0.00035, 'l1_ratio': 0.95, 'random_state': 43}
-#Elasticnet_best_score = 0.10932
+kernel_best_params = {'alpha': 0.28, 'coef0': 4, 'degree': 2, 'kernel': 'polynomial'}
+kernel_best_score = 0.10849
+
+
+# '''Define hyperparameters of Elastic net.'''
+# elastic_params = {'alpha': [ 0.0003, 0.00035, 0.00045, 0.0005], 
+#                  'l1_ratio': [0.80, 0.85, 0.9, 0.95],
+#                  'random_state':[seed]}
+# grid_search_cv(elnt, elastic_params)
+# elastic_best_params, elastic_best_score = best_params, best_score
+# print('Elastic Net best params:{} & best_score:{:0.5f}' .format(elastic_best_params, elastic_best_score))
+
+elastic_best_params = {'alpha': 0.00035, 'l1_ratio': 0.95, 'random_state': 43}
+elastic_best_score = 0.10932
 
 
 '''Define hyperparameters of support vector machine'''
-svm_params = {
-    'kernel': ['linear', 'poly', 'rbf', 'sigmoid'], # precomputed is omitted from kernel to avoid error.
-    'C': [4, 5], 
-    'gamma':[0.0001, 0.001]}
+# svm_params = {
+#     'kernel': ['linear', 'poly', 'rbf', 'sigmoid'], # precomputed is omitted from kernel to avoid error.
+#     'C': [4, 5], 
+#     'gamma':[0.0001, 0.001]}
 
-grid_search_cv(svm, svm_params)
-svm_best_params, svm_best_score = best_params, best_score
-print('SVM best params:{} & best_score:{:0.5f}' .format(svm_best_params, svm_best_score))
+# grid_search_cv(svm, svm_params)
+# svm_best_params, svm_best_score = best_params, best_score
+# print('SVM best params:{} & best_score:{:0.5f}' .format(svm_best_params, svm_best_score))
 
-#SVM_best_params = {'C': 5, 'gamma': 0.001, 'kernel': 'rbf'}
-#SVM_best_score = 0.11162
+svm_best_params = {'C': 5, 'gamma': 0.001, 'kernel': 'rbf'}
+svm_best_score = 0.11162
 
 
 '''Hyperparameters of xgb'''
@@ -580,7 +580,7 @@ voting_reg = VotingRegressor(estimators=[('lasso', lasso_opt), ('ridge', ridge_o
 
 cross_validate(voting_reg)
 
-predict_with_optimized_models(voting_reg).to_csv('voting_regressor.csv', index = False)
+# predict_with_optimized_models(voting_reg).to_csv('voting_regressor.csv', index = False)
 
 # from sklearn.model_selection import train_test_split
 # X_train, X_test, Y_train, Y_test = train_test_split(df_train_final, y_train, test_size = 0.3, random_state = seed)
@@ -593,8 +593,29 @@ predict_with_optimized_models(voting_reg).to_csv('voting_regressor.csv', index =
 #     print(reg.__class__.__name__, accuracy_score(Y_test, y_pred))
 
 
+'''2. Bagging Regressor. '''
 
 
+def bagging_method(model_list):
+    cross_validation_score = {}
+    from sklearn.ensemble import BaggingRegressor
+    for model in model_list:
+        
+        bagging_reg = BaggingRegressor(base_estimator=model,
+                        n_estimators=10, random_state=0)
+
+        cross_validation_score[str(model)] = cross_validate(bagging_reg)
+        print("done for ",str(model))
+        
+    return cross_validation_score
+
+
+# bagging_scores = bagging_method(opt_models)
+
+
+bagging_scores_values = [0.108971, 0.110569, 0.108276, 0.10896600000000001, 0.11071, 0.11244200000000001, 0.11102400000000001, 0.111422]
+bagging_dict = dict(zip(opt_models, bagging_scores_values)) 
+bagging_dict
 # from sklearn.model_selection import train_test_split
 # X_train,X_test,Y_train,Y_test = train_test_split(X,y, test_size=0.2, random_state=42)
 
